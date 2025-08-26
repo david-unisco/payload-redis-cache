@@ -1,10 +1,7 @@
-import type { Config, Plugin } from 'payload/config'
-import { CollectionConfig, GlobalConfig } from 'payload/types'
+import type { Config, Plugin, CollectionConfig, GlobalConfig } from 'payload'
 import { initRedisContext } from './adapters/redis'
 import { invalidateCacheAfterChangeHook, invalidateCacheAfterDeleteHook } from './hooks'
-import { cacheMiddleware } from './middlewares'
 import { PluginOptions, RedisInitOptions } from './types'
-import { extendWebpackConfig } from './webpack'
 
 export const initRedis = (params: RedisInitOptions) => {
   const {
@@ -21,7 +18,7 @@ export const cachePlugin =
     const includedCollections: string[] = []
     const includedGlobals: string[] = []
     // Merge incoming plugin options with the default ones
-    const { excludedCollections = [], excludedGlobals = [], includedPaths = [] } = pluginOptions
+    const { excludedCollections = [], excludedGlobals = [] } = pluginOptions
 
     const collections = config?.collections
       ? config.collections?.map((collection): CollectionConfig => {
@@ -67,22 +64,7 @@ export const cachePlugin =
 
     return {
       ...config,
-      admin: {
-        ...(config?.admin || {}),
-        webpack: extendWebpackConfig({ config })
-      },
       collections,
-      globals,
-      express: {
-        preMiddleware: [
-          ...(config?.express?.preMiddleware || []),
-          cacheMiddleware({
-            includedCollections,
-            includedGlobals,
-            includedPaths,
-            apiBaseUrl: config?.routes?.api || '/api'
-          })
-        ]
-      }
+      globals
     }
   }

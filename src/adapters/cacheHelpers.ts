@@ -41,7 +41,7 @@ export const getCacheItem = async ({
     return null
   }
   logger.info(`<< Get Cache [OK] - URL:[${requestedUrl}] User:[${userCollection}]`)
-  return jsonData
+  return jsonData as string
 }
 
 export const setCacheItem = ({

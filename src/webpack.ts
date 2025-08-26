@@ -1,31 +1,20 @@
 import path from 'path'
-import type { Config } from 'payload/config'
 import type { Configuration as WebpackConfig } from 'webpack'
-import type { PluginOptions } from './types'
 
-interface ExtendWebpackConfigArgs {
-  config: Config
-  options?: PluginOptions
-}
-
+// Note: This webpack configuration is not used in Payload v3
+// Keeping it for backward compatibility or potential future use
 export const extendWebpackConfig =
-  (args: ExtendWebpackConfigArgs) =>
+  () =>
   (webpackConfig: WebpackConfig): WebpackConfig => {
-    const { config: originalConfig } = args
-    const existingWebpackConfig =
-      typeof originalConfig.admin?.webpack === 'function'
-        ? originalConfig.admin.webpack(webpackConfig)
-        : webpackConfig
-
     const adaptersPath = path.resolve(__dirname, 'adapters')
     const adaptersMock = path.resolve(__dirname, 'mocks')
 
     const config: WebpackConfig = {
-      ...existingWebpackConfig,
+      ...webpackConfig,
       resolve: {
-        ...(existingWebpackConfig.resolve || {}),
+        ...(webpackConfig.resolve || {}),
         alias: {
-          ...(existingWebpackConfig.resolve?.alias || {}),
+          ...(webpackConfig.resolve?.alias || {}),
           [adaptersPath]: adaptersMock
         }
       }

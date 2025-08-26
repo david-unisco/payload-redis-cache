@@ -1,4 +1,4 @@
-import { CollectionAfterDeleteHook } from 'payload/types'
+import { CollectionAfterDeleteHook } from 'payload'
 import { invalidateCache } from '../adapters/cacheHelpers'
 
 /* Explicit type as CollectionAfterChangeHook | GlobalAfterChangeHook

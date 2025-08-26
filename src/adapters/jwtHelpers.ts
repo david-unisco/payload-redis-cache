@@ -1,5 +1,5 @@
 import { parse } from 'cookie'
-import decode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 import { isString } from 'lodash'
 import { JwtToken } from '../types'
 
@@ -12,5 +12,5 @@ export const extractToken = (cookies: string): string | null | undefined => {
 }
 
 export const getTokenPayload = (token: string): JwtToken => {
-  return decode(token)
+  return jwtDecode(token)
 }
